@@ -5,6 +5,7 @@
       <div class="fs-5 d-flex">
         UserName:
         <p
+          v-if="post.userInfo"
           class="user-post text-primary"
           data-bs-target="#staticBackdrop"
           data-bs-toggle="modal"

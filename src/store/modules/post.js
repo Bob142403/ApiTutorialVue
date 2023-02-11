@@ -1,28 +1,20 @@
+import { postsApi } from "../../services/posts-api";
+import { usersApi } from "../../services/users-api";
+
 const searchParams = new URLSearchParams(document.location.search);
 
 export default {
   actions: {
-    async fetchPosts({ commit }) {
-      const postsURL = "https://jsonplaceholder.typicode.com/posts";
-      const usersURL = "https://jsonplaceholder.typicode.com/users";
+    async fetchPosts({ commit, rootState }) {
+      // commit("addPosts", postsApi.getPosts());
+      await postsApi.getPosts().then(posts => commit("addPosts", posts));
 
-      const users = await fetch(usersURL).then(response => response.json());
-
-      commit("addUsers", users);
-
-      const posts = await fetch(postsURL).then(response => response.json());
-
-      commit("addPosts", posts);
-
-      commit("addUserInfo", users);
+      commit("addUserInfo", rootState.user.users);
     }
   },
   mutations: {
     addPosts(state, posts) {
       state.posts = posts;
-    },
-    addUsers(state, users) {
-      state.users = users;
     },
     addUserInfo(state, users) {
       state.posts = state.posts.map(post => {
@@ -47,14 +39,10 @@ export default {
   },
   state: {
     posts: [],
-    users: [],
     info: {},
     searchTitle: searchParams.get("search") || ""
   },
   getters: {
-    allPosts(state) {
-      return state.posts;
-    },
     getSearchTitle(state) {
       return state.searchTitle;
     },

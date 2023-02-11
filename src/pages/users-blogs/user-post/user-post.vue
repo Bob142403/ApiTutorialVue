@@ -22,7 +22,12 @@
 import { mapMutations } from "vuex";
 
 export default {
-  props: ["post"],
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  },
   methods: {
     ...mapMutations(["setModalInfo"])
   }
